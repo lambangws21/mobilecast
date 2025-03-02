@@ -6,8 +6,8 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="w-full min-h-screen bg-black flex justify-center">
-      <div className="w-[412px] min-h-screen bg-black text-white overflow-hidden relative">
+    <div className="w-full min-h-screen bg-slate-200/30 flex justify-center">
+      <div className="w-[430px] min-h-screen p-2  bg-slate-300 text-slate-700 overflow-hidden fixed">
         {children}
       </div>
     </div>
