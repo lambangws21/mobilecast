@@ -70,23 +70,23 @@ export default function EditForm({ editData, onClose, onUpdate }: EditFormProps)
       <ToastContainer position="top-right" autoClose={6000} />
 
       {formData && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-slate-600 p-6 rounded-lg shadow-lg w-96 relative">
-            <h2 className="text-lg font-bold mb-4">✏️ Edit Data</h2>
+        <div className="fixed inset-0 bg-slate-200/70 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-slate-700 p-6 rounded-lg shadow-lg w-96 relative">
+            <h2 className="text-xl font-bold mb-4 text-slate-50"> Edit Data</h2>
             <button
               onClick={!isUpdating ? onClose : undefined} 
-              className="absolute top-2 right-2 text-gray-900 hover:text-red-500"
+              className="absolute top-2 right-2 text-gray-200 hover:text-red-500"
               disabled={isUpdating}
             >
               <CircleX />
             </button>
 
             <form onSubmit={handleSubmit} className="space-y-3">
-              <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-700" required />
-              <input type="text" name="jenisBiaya" value={formData.jenisBiaya} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-700" required />
-              <input type="text" name="keterangan" value={formData.keterangan} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-700" required />
-              <input type="number" name="jumlah" value={formData.jumlah} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-700" required />
-              <input type="text" name="klaimOleh" value={formData.klaimOleh} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-700" required />
+              <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
+              <input type="text" name="jenisBiaya" value={formData.jenisBiaya} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
+              <input type="text" name="keterangan" value={formData.keterangan} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
+              <input type="number" name="jumlah" value={formData.jumlah} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
+              <input type="text" name="klaimOleh" value={formData.klaimOleh} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
               
               <button type="submit" className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-700 transition" disabled={isUpdating}>
                 {isUpdating ? 'Mengupdate...' : 'Simpan Perubahan'}
@@ -98,7 +98,7 @@ export default function EditForm({ editData, onClose, onUpdate }: EditFormProps)
 
       {/* 🔹 Full-Screen Loading Overlay */}
       {isUpdating && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-slate-300 bg-opacity-70 flex justify-center items-center z-50">
           <LoaderCircle className="animate-spin w-16 h-16 text-white" />
         </div>
       )}

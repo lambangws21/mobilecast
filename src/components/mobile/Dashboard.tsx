@@ -10,6 +10,7 @@ import TransactionTable  from '@/components/mobile/TransactionTable';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
+import DataList from "@/components/sheets-pre/ListData";
 import {  Loader2 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -39,6 +40,10 @@ export default function DashboardPage() {
           <p className="font-semibold text-slate-800 mb-2">Transaction History</p>
           <TransactionTable transactions={data.transactions} />
         </div>
+        <div className="p-1 bg-white rounded-xl shadow-sm">
+        <DataList />
+        </div>
+       
       </div>
       <Sidebar />
     </DashboardLayout>
