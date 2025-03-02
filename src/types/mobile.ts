@@ -35,3 +35,16 @@ export interface Profile {
   level: string;
   stars: number;
 }
+export interface Stats {
+  progress: number;
+  arenaScore: number;
+  ranking: number;
+  following: number;
+}
+
+
+export interface Tournament {
+  name: string;
+  entryFee: number;
+  endDate: string;
+}
