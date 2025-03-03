@@ -10,7 +10,7 @@ import TransactionTable  from '@/components/mobile/TransactionTable';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
-import DataList from "@/components/sheets-pre/ListData";
+import DataList from "@/components/sheets-pre/NewListData";
 import {  Loader2 } from 'lucide-react';
 
 export default function DashboardPage() {
