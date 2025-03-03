@@ -98,38 +98,37 @@ export default function ListData() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-xl font-semibold text-center mb-4">📋 Daftar Data (Sheet1)</h2>
-          <table className="min-w-full bg-slate-600 rounded-lg border p-2 text-sm">
+          <table className="min-w-full bg-slate-600/50 rounded-lg border p-2 text-sm">
             <thead>
               <tr className="text-white">
-                <th className="p-2 border">Date</th>
-                <th className="p-2 border">Jenis Biaya</th>
-                <th className="p-2 border">Keterangan</th>
+                <th className="p-2 border-b text-xs ">Date</th>
+                <th className="p-2 border-b text-xs ">Jenis Biaya</th>
+                <th className="p-2 border-b text-xs ">Keterangan</th>
                 {/* Kolom Jumlah dibuat sticky di sisi kanan */}
-                <th className="p-2 border text-right sticky right-0 bg-slate-600">
+                <th className="p-2 border-b text-xs  text-right sticky right-0 bg-slate-600/50">
                   Jumlah (Rp)
                 </th>
-                <th className="p-2 border">Klaim Oleh</th>
-                <th className="p-2 border text-center">Status</th>
-                <th className="p-2 border">Aksi</th>
+                <th className="p-2 border-b text-xs ">Klaim Oleh</th>
+                <th className="p-2 border-b text-xs  text-center">Status</th>
+                <th className="p-2 border-b text-xs ">Aksi</th>
               </tr>
             </thead>
             <motion.tbody initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
               {paginatedData.map((item) => (
                 <tr key={item.no} className="bg-white hover:bg-slate-50 transition">
-                  <td className="p-2 border text-center">{formatDate(item.date)}</td>
-                  <td className="p-2 border">{item.jenisBiaya}</td>
-                  <td className="p-2 border">{item.keterangan}</td>
-                  <td className="p-2 border text-right sticky right-0 bg-white z-10">
+                  <td className="p-2 border-b text-xs  text-center">{formatDate(item.date)}</td>
+                  <td className="p-2 border-b text-xs ">{item.jenisBiaya}</td>
+                  <td className="p-2 border-b text-xs ">{item.keterangan}</td>
+                  <td className="p-2 border-b text-xs  text-right sticky right-0 bg-white z-10">
                     {item.jumlah.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}
                   </td>
-                  <td className="p-2 border">{item.klaimOleh}</td>
-                  <td className="p-2 border text-center">
+                  <td className="p-2 border-b text-xs ">{item.klaimOleh}</td>
+                  <td className="p-2 border-b text-xs  text-center">
                     <a href={item.status} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
                       <Eye className="w-5 h-5 mx-auto" />
                     </a>
                   </td>
-                  <td className="p-2 border flex gap-2 justify-center">
+                  <td className="p-2 flex gap-2 justify-center bg-clip-border items-center">
                     <button onClick={() => setEditData(item)} className="text-green-500">
                       <Edit2 className="w-5 h-5 hover:scale-110 transition" />
                     </button>

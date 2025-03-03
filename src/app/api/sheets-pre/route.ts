@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxWYt1R2Z1A0TPkdmhHhdzWa142urbqiFfq9XbV6AAy2GwYGNbwXfznJ6UYzHeCTcW2iA/exec";
+const GAS_URL = process.env.GAS_URL || "";
 const FOLDER_ID = '1DhExUaqj-JvctO7WAj-NCIBPT_811YZm';
 
 

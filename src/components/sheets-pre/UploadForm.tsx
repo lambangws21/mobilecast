@@ -118,7 +118,7 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            className="fixed inset-0 bg-slate-900/40 bg-opacity-70 flex justify-center items-center z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -130,17 +130,17 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
               exit={{ y: -20, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h2 className="text-lg font-bold mb-4">{editData ? '✏️ Edit Data' : '📤 Tambah Data & Upload File'}</h2>
+              <h2 className="text-lg font-bold mb-4 text-sky-50">{editData ? ' Edit Data' : 'Tambah Data & Upload File'}</h2>
               <button onClick={closeModal} className="absolute top-2 right-2 text-gray-900 hover:text-red-500">
                 <CircleX size={20} />
               </button>
               <form onSubmit={handleSubmit} className="space-y-3">
-                <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border rounded-lg" required />
-                <input type="text" name="jenisBiaya" placeholder="Jenis Biaya" value={formData.jenisBiaya} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-900" required />
-                <input type="text" name="keterangan" placeholder="Keterangan" value={formData.keterangan} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-900" required />
-                <input type="number" name="jumlah" placeholder="Jumlah (Rp)" value={formData.jumlah} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-900" required />
-                <input type="text" name="klaimOleh" placeholder="Klaim Oleh" value={formData.klaimOleh} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-900" required />
-                <input type="file" accept="image/*,application/pdf" onChange={(e) => setFile(e.target.files?.[0] || null)} className="w-full p-2 border rounded-lg text-slate-900" required />
+                <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-100" required />
+                <input type="text" name="jenisBiaya" placeholder="Jenis Biaya" value={formData.jenisBiaya} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-200" required />
+                <input type="text" name="keterangan" placeholder="Keterangan" value={formData.keterangan} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-200" required />
+                <input type="number" name="jumlah" placeholder="Jumlah (Rp)" value={formData.jumlah} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-200" required />
+                <input type="text" name="klaimOleh" placeholder="Klaim Oleh" value={formData.klaimOleh} onChange={handleChange} className="w-full p-2 border rounded-lg text-slate-200" required />
+                <input type="file" accept="image/*,application/pdf" onChange={(e) => setFile(e.target.files?.[0] || null)} className="w-full p-2 border rounded-lg text-slate-200" required />
                 <button type="submit" className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-700 transition">
                   {isUploading ? 'Mengunggah...' : formData.id ? 'Simpan Perubahan' : 'Unggah & Simpan'}
                 </button>
@@ -153,7 +153,7 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
       <AnimatePresence>
         {isUploading && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+            className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
