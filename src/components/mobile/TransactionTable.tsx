@@ -1,15 +1,40 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Transaction } from "@/types/mobile";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Eye } from "lucide-react";
+import { Transaction } from "@/types/mobile";
+
 
 interface TransactionTableProps {
   transactions: Transaction[];
 }
 
 export default function TransactionTable({ transactions }: TransactionTableProps) {
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Auto carousel: berpindah halaman setiap 5 detik
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPage((prev) => (prev === totalPages ? 1 : prev + 1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalPages]);
+
+  const displayedTransactions = transactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Variants untuk transisi container
+  const containerVariants = {
+    hidden: { x: 100, opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+    exit: { x: -100, opacity: 0 },
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -25,29 +50,28 @@ export default function TransactionTable({ transactions }: TransactionTableProps
             <th className="p-2 text-center">Aksi</th>
           </tr>
         </thead>
-        <motion.tbody
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          {transactions.map((item, idx) => (
-            <motion.tr
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="border-b"
-            >
-              <td className="p-2 text-slate-600">{item.date}</td>
-              <td className="p-2 text-slate-600">{item.amount}</td>
-              <td className="p-2 text-center">
-                <button className="text-blue-500 hover:text-blue-700">
-                  <Eye className="w-4 h-4 md:w-5 md:h-5 inline-block" />
-                </button>
-              </td>
-            </motion.tr>
-          ))}
-        </motion.tbody>
+        <AnimatePresence mode="wait">
+          <motion.tbody
+            key={currentPage}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            {displayedTransactions.map((item, idx) => (
+              <tr key={idx} className="border-b">
+                <td className="p-2 text-slate-600">{item.date}</td>
+                <td className="p-2 text-slate-600">{item.amount}</td>
+                <td className="p-2 text-center">
+                  <button className="text-blue-500 hover:text-blue-700">
+                    <Eye className="w-4 h-4 md:w-5 md:h-5 inline-block" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </motion.tbody>
+        </AnimatePresence>
       </table>
     </motion.div>
   );

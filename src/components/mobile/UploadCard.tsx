@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProfileCard from "./ProfileCard";
-import UploadForm from "@/components/sheets-pre/UploadForm";
+import UploadForm from "@/components/sheets-pre/NewUploadForm";
 import Button from "@/components/ui/button"; // Komponen Button custom Anda
 import { Plus } from "lucide-react";
 import { Profile } from "@/types/mobile";
@@ -19,7 +19,7 @@ export default function ProfileWithForm({ profile }: ProfileWithFormProps) {
   const toggleForm = () => setFormOpen((prev) => !prev);
 
   return (
-    <div className="max-w-md mx-auto p-4 rounded-lg shadow-sm bg-slate-200/70">
+    <div className="max-w-md mx-auto p-4 rounded- shadow-sm bg-slate-200/70">
       <ProfileCard profile={profile} />
       <div className="mt-4 flex justify-start ">
         <Button onClick={toggleForm} className="flex items-center gap-2 rounded-full">

@@ -3,7 +3,7 @@
 import DashboardLayout from '@/layout/DashboardLayout';
 import { Header } from '@/components/mobile/Header';
 import { Sidebar } from '@/components/mobile/Sidebar';
-import ProfileCard from '@/components/mobile/UploadCard';
+import ProfileCard from '@/components/mobile/NewUploadCard';
 import TournamentCard from '@/components/mobile/TournamentCard';
 import StatsGrid from '@/components/mobile/StatsGrid';
 import TransactionTable  from '@/components/mobile/TransactionTable';

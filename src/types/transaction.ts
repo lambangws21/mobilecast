@@ -23,3 +23,8 @@ export interface Transaction {
     klaimOleh: string;
     status: string;
   }
+
+  export interface Transaction {
+    date: string;
+    amount: string;
+  }
