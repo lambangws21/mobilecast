@@ -19,12 +19,19 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadData() {
-      const result = await fetchDashboardData();
-      setData(result);
-      setLoading(false);
+      try {
+        const result = await fetchDashboardData();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        // Anda bisa menambahkan state error jika diperlukan untuk menampilkan pesan ke user
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
   }, []);
+  
 
   if (loading) return <div className="h-screen flex items-center justify-center"><Loader2 className='animate-spin h-32 w-32'/></div>;
   if (!data) return <div className="h-screen flex items-center justify-center">Failed to load data</div>;

@@ -1,44 +1,30 @@
 "use client";
-
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ProfileCard from "./ProfileCard";
-import UploadForm from "@/components/sheets-pre/UploadForm";
-import Button from "@/components/ui/button"; // Komponen Button custom Anda
-import { Plus } from "lucide-react";
+import { motion } from "framer-motion";
 import { Profile } from "@/types/mobile";
+import { User } from "lucide-react";
 
-interface ProfileWithFormProps {
+interface ProfileCardProps {
   profile: Profile;
 }
 
-export default function ProfileWithForm({ profile }: ProfileWithFormProps) {
-  const [formOpen, setFormOpen] = useState(false);
-
-  const toggleForm = () => setFormOpen((prev) => !prev);
-
+export default function ProfileCard({ profile }: ProfileCardProps) {
   return (
-    <div className="max-w-md mx-auto p-4">
-      <ProfileCard profile={profile} />
-      <div className="mt-4 flex justify-end">
-        <Button onClick={toggleForm} className="flex items-center gap-2">
-          <Plus size={20} />
-          Tambah Data
-        </Button>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ scale: 1.05 }}
+      className="p-4 bg-white rounded-xl shadow-sm flex items-center space-x-4"
+    >
+      <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+        <User size={32} />
       </div>
-      <AnimatePresence>
-        {formOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="mt-4 overflow-hidden"
-          >
-            <UploadForm onUpload={() => setFormOpen(false)} editData={null} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      <div>
+        <p className="font-semibold text-slate-800">{profile.name}</p>
+        <p className="text-xs text-slate-500">
+          {profile.level} {"⭐".repeat(profile.stars)}
+        </p>
+      </div>
+    </motion.div>
   );
 }
