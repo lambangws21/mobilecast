@@ -40,14 +40,14 @@ const getIcon = (jenisBiaya?: string) => {
     );
   } else if (lower.includes("ticket") || lower.includes("tiket")) {
     return (
-      <Ticket className="text-red-500 bg-red-100/50 shadow-xl p-2 rounded-full inline-block w-20 h-20" />
+      <Ticket className="w-20 h-20 text-red-500 bg-red-100/50 shadow-xl p-2 rounded-full inline-block" />
     );
   } else {
     return null;
   }
 };
 
-export default function DataCarousel() {
+export default function NewTransactionInfo() {
   const [dataList, setDataList] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -56,7 +56,6 @@ export default function DataCarousel() {
     try {
       const res = await fetch("/api/get-data-pre");
       const result: { status: string; data: DataRow[] } = await res.json();
-
       if (result.status === "success") {
         const parsedData: DataRow[] = result.data.map((row) => ({
           no: Number(row.no),
@@ -82,13 +81,11 @@ export default function DataCarousel() {
     fetchData();
   }, []);
 
-  // Auto carousel: ganti item setiap 5 detik
+  // Auto carousel: ganti item setiap 9 detik
   useEffect(() => {
     if (!loading && dataList.length > 0) {
       const interval = setInterval(() => {
-        setCurrentIndex((prev) =>
-          prev === dataList.length - 1 ? 0 : prev + 1
-        );
+        setCurrentIndex((prev) => (prev === dataList.length - 1 ? 0 : prev + 1));
       }, 9000);
       return () => clearInterval(interval);
     }
@@ -102,7 +99,7 @@ export default function DataCarousel() {
     setCurrentIndex((prev) => (prev === dataList.length - 1 ? 0 : prev + 1));
   };
 
-  // Variants untuk transisi carousel dengan spring, tanpa mengubah ukuran container
+  // Variants untuk transisi carousel tanpa scaling (hanya geser horizontal)
   const variants = {
     enter: { opacity: 0, x: 50 },
     center: { opacity: 1, x: 0 },
@@ -113,12 +110,10 @@ export default function DataCarousel() {
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       {loading ? (
-        <div className="h-screen flex items-center justify-center">
-          Loading...
-        </div>
+        <div className="h-screen flex items-center justify-center">Loading...</div>
       ) : (
         <div className="max-w-md mx-auto p-4">
-          {/* Container tetap dengan posisi relative dan overflow-hidden */}
+          {/* Container dengan ukuran tetap dan overflow-hidden */}
           <div className="relative h-64 overflow-hidden">
             <AnimatePresence initial={false}>
               <motion.div
@@ -127,15 +122,15 @@ export default function DataCarousel() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ type: "spring", stiffness: 80, damping: 20 }}
-                className="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg  p-4"
+                transition={{ type: "spring", stiffness: 60, damping: 25 }}
+                className="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg p-4"
               >
                 <div className="text-gray-500 text-sm font-semibold border-2 border-gray-300 rounded-full px-4 py-1 mb-2 shadow-2xl">
                   {formatDate(dataList[currentIndex].date)}
                 </div>
                 <div className="flex flex-col items-center gap-2 my-2">
                   {getIcon(dataList[currentIndex].jenisBiaya)}
-                  <span className="text-2xl font-extrabold font-stretch-50%">
+                  <span className="text-2xl font-extrabold">
                     {dataList[currentIndex].jenisBiaya}
                   </span>
                 </div>
@@ -170,7 +165,7 @@ export default function DataCarousel() {
               onClick={handlePrevious}
               className="p-2 bg-gray-300 rounded-full text-xs shadow-2xl"
             >
-              <ArrowLeft className="w-4 h-4 shadow-xl " />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <span className="text-xs">
               {currentIndex + 1} / {dataList.length}
@@ -179,7 +174,7 @@ export default function DataCarousel() {
               onClick={handleNext}
               className="p-2 bg-gray-300 rounded-full text-xs shadow-2xl"
             >
-              <ArrowRight className="w-4 h-4 shadow-xl " />
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>

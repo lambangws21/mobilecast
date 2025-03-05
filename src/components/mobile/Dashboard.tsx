@@ -6,7 +6,7 @@ import { Sidebar } from '@/components/mobile/Sidebar';
 import ProfileCard from '@/components/mobile/NewUploadCard';
 import TournamentCard from '@/components/mobile/TournamentCard';
 import StatsGrid from '@/components/mobile/StatsGrid';
-import TransactionTable  from '@/components/mobile/NewTransactionInfo';
+import NewTransactionInfo  from '@/components/mobile/NewTransactionInfo';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
@@ -45,7 +45,7 @@ export default function DashboardPage() {
         <StatsGrid stats={data.stats} />
         <div className="p-4 bg-white rounded-xl shadow-sm">
           <p className="font-semibold text-slate-800 mb-2">Transaction History</p>
-          <TransactionTable transactions={data.transactions} />
+          <NewTransactionInfo />
         </div>
         <div className="p-1 bg-white rounded-xl shadow-sm">
         <DataList />
