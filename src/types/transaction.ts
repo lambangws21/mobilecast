@@ -26,7 +26,7 @@ export interface Transaction {
 
   export interface Transaction {
     date: string;
-    amount: string;
+    amount: number;
   }
 
   export interface NewTransaction{
