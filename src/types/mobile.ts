@@ -20,6 +20,8 @@ export interface StatsInfo {
 
 export interface Transaction {
   date: string;
+  jenisBiaya: string;
+  jumlah: string;
   amount: string;
 }
 
@@ -47,4 +49,9 @@ export interface Tournament {
   name: string;
   entryFee: number;
   endDate: string;
+}
+
+export interface Transaction{
+  date: string;
+  jenisBiaya: string;
 }

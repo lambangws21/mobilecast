@@ -28,3 +28,10 @@ export interface Transaction {
     date: string;
     amount: string;
   }
+
+  export interface NewTransaction{
+    date: string;
+    jenisBiaya: string;
+    keterangan: string;
+  
+  }

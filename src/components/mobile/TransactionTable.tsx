@@ -11,7 +11,7 @@ interface TransactionTableProps {
 }
 
 export default function TransactionTable({ transactions }: TransactionTableProps) {
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -19,7 +19,7 @@ export default function TransactionTable({ transactions }: TransactionTableProps
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPage((prev) => (prev === totalPages ? 1 : prev + 1));
-    }, 5000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [totalPages]);
 
@@ -31,7 +31,7 @@ export default function TransactionTable({ transactions }: TransactionTableProps
   // Variants untuk transisi container
   const containerVariants = {
     hidden: { x: 100, opacity: 0 },
-    visible: { x: 0, opacity: 1 },
+    visible: { x: 0, opacity: 2 },
     exit: { x: -100, opacity: 0 },
   };
 
@@ -47,6 +47,7 @@ export default function TransactionTable({ transactions }: TransactionTableProps
           <tr className="whitespace-nowrap">
             <th className="p-2 text-left">Tanggal</th>
             <th className="p-2 text-left">Jumlah</th>
+            <th className="p-2 text-left">Keterangan</th>
             <th className="p-2 text-center">Aksi</th>
           </tr>
         </thead>
@@ -63,6 +64,7 @@ export default function TransactionTable({ transactions }: TransactionTableProps
               <tr key={idx} className="border-b">
                 <td className="p-2 text-slate-600">{item.date}</td>
                 <td className="p-2 text-slate-600">{item.amount}</td>
+                <td className="p-2 text-slate-600">{item.jumlah}</td>
                 <td className="p-2 text-center">
                   <button className="text-blue-500 hover:text-blue-700">
                     <Eye className="w-4 h-4 md:w-5 md:h-5 inline-block" />

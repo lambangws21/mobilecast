@@ -6,7 +6,7 @@ import { Sidebar } from '@/components/mobile/Sidebar';
 import ProfileCard from '@/components/mobile/NewUploadCard';
 import TournamentCard from '@/components/mobile/TournamentCard';
 import StatsGrid from '@/components/mobile/StatsGrid';
-import TransactionTable  from '@/components/mobile/TransactionTable';
+import TransactionTable  from '@/components/mobile/NewTransactionInfo';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,7 @@ export default function DashboardPage() {
   }, []);
   
 
-  if (loading) return <div className="h-screen flex items-center justify-center"><Loader2 className='animate-spin h-32 w-32'/></div>;
+  if (loading) return <div className="h-screen flex items-center justify-center"><Loader2 className='animate-spin h-20 w-20'/></div>;
   if (!data) return <div className="h-screen flex items-center justify-center">Failed to load data</div>;
 
   return (
