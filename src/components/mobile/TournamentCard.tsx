@@ -15,7 +15,7 @@ export default function TournamentCard({ tournament: initialTournament }: Tourna
     try {
       const res = await fetch("/api/get-tournament");
       const result: { status: string; data: Tournament } = await res.json();
-      if (result.status === "success") {
+      if (result.status === "success" && result.data) {
         setTournament(result.data);
       } else {
         console.error("Failed to fetch tournament data");
@@ -29,24 +29,26 @@ export default function TournamentCard({ tournament: initialTournament }: Tourna
   useEffect(() => {
     const refreshInterval = setInterval(() => {
       fetchTournamentData();
-    }, 2000);
+    }, 600000);
     return () => clearInterval(refreshInterval);
   }, []);
 
   return (
-    <div className="relative p-4 bg-green-100 rounded-xl shadow-sm text-green-800 flex flex-col items-center justify-center">
+    <div className="relative p-4 bg-green-100/95 rounded-xl shadow-sm text-green-800 flex flex-col items-center justify-center">
       {/* Badge alert di sudut kanan atas */}
       <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
         New
       </div>
       <p className="text-sm sm:text-base md:text-lg font-bold">{tournament.name}</p>
-      <p className="mt-2 text-2xl sm:text-3xl md:text-4xl font-extrabold">
-        {tournament.entryFee.toLocaleString("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })}
+      <p className="mt-2 text-lg sm:text-xl md:text-2xl font-extrabold">
+        {tournament.entryFee !== undefined
+          ? tournament.entryFee.toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })
+          : ""}
       </p>
     </div>
   );

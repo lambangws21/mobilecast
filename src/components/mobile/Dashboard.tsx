@@ -4,7 +4,6 @@ import DashboardLayout from '@/layout/DashboardLayout';
 import { Header } from '@/components/mobile/Header';
 import { Sidebar } from '@/components/mobile/Sidebar';
 import ProfileCard from '@/components/mobile/NewUploadCard';
-import TournamentCard from '@/components/mobile/TournamentCard';
 import StatsGrid from '@/components/mobile/StatsGrid';
 import NewTransactionInfo from '@/components/mobile/NewTransactionInfo';
 import { fetchDashboardData } from '@/lib/mobile';
@@ -48,13 +47,13 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <Header />
+      <Header /> 
       {/* Menampilkan satu toast sekaligus, otomatis tertutup setelah 3 detik */}
       <ToastContainer limit={1} autoClose={3000} position="top-right" />
       <div className="p-4 space-y-4 pb-24 w-full">
         <ProfileCard profile={data.profile} />
-        <TournamentCard tournament={data.tournament} />
-        <StatsGrid stats={data.stats} />
+       
+        <StatsGrid stats={data.stats} tournament={data.tournament} />
         <div className="p-4 bg-white rounded-xl shadow-sm">
           <p className="font-semibold text-slate-800 mb-2">Transaction History</p>
           <NewTransactionInfo />
