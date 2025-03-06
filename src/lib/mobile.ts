@@ -22,7 +22,9 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     throw new Error("Failed to fetch valid data from Sheets");
   }
 
-  // Mapping data agar sesuai dengan tipe DashboardData
+  // Ambil row terbaru dari data yang diambil (asumsi: data diurutkan sehingga elemen terakhir adalah yang terbaru)
+  const latestRow = rawData.data[rawData.data.length - 1];
+
   return {
     profile: {
       name: "Herlambang Ws",
@@ -30,9 +32,9 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       stars: 2,
     },
     tournament: {
-      name: "Autumn Cup",
-      entryFee: 100,
-      endDate: "10.07.2019",
+      name: (latestRow.jenisBiaya),
+      entryFee: Number(latestRow.jumlah), // Entry fee diambil dari data terbaru
+      endDate: (latestRow.date), // Anda bisa menggantinya dengan formatDate(latestRow.date) jika diinginkan
     },
     stats: {
       progress: rawData.data.length,
@@ -44,7 +46,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       date: formatDate(row.date),
       jenisBiaya: row.jenisBiaya,
       jumlah: row.jumlah.toString(), // Konversi ke string
-      amount: row.jumlah.toString(),           // Jika diperlukan, amount bertipe number
+      amount: row.jumlah,
     })),
   };
 }

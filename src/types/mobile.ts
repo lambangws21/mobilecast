@@ -22,7 +22,7 @@ export interface Transaction {
   date: string;
   jenisBiaya: string;
   jumlah: string;
-  amount: string;
+  amount: number;
 }
 
 export interface DashboardData {

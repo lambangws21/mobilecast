@@ -6,12 +6,14 @@ import { Sidebar } from '@/components/mobile/Sidebar';
 import ProfileCard from '@/components/mobile/NewUploadCard';
 import TournamentCard from '@/components/mobile/TournamentCard';
 import StatsGrid from '@/components/mobile/StatsGrid';
-import NewTransactionInfo  from '@/components/mobile/NewTransactionInfo';
+import NewTransactionInfo from '@/components/mobile/NewTransactionInfo';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
 import DataList from "@/components/sheets-pre/NewListData";
-import {  Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
@@ -24,7 +26,6 @@ export default function DashboardPage() {
         setData(result);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
-        // Anda bisa menambahkan state error jika diperlukan untuk menampilkan pesan ke user
       } finally {
         setLoading(false);
       }
@@ -32,13 +33,24 @@ export default function DashboardPage() {
     loadData();
   }, []);
   
-
-  if (loading) return <div className="h-screen flex items-center justify-center"><Loader2 className='animate-spin h-20 w-20'/></div>;
-  if (!data) return <div className="h-screen flex items-center justify-center">Failed to load data</div>;
+  if (loading)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin h-20 w-20" />
+      </div>
+    );
+  if (!data)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Failed to load data
+      </div>
+    );
 
   return (
     <DashboardLayout>
       <Header />
+      {/* Menampilkan satu toast sekaligus, otomatis tertutup setelah 3 detik */}
+      <ToastContainer limit={1} autoClose={3000} position="top-right" />
       <div className="p-4 space-y-4 pb-24 w-full">
         <ProfileCard profile={data.profile} />
         <TournamentCard tournament={data.tournament} />
@@ -48,9 +60,8 @@ export default function DashboardPage() {
           <NewTransactionInfo />
         </div>
         <div className="p-1 bg-white rounded-xl shadow-sm">
-        <DataList />
+          <DataList />
         </div>
-       
       </div>
       <Sidebar />
     </DashboardLayout>

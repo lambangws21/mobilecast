@@ -21,7 +21,7 @@ const getIcon = (jenisBiaya?: string) => {
   const lower = (jenisBiaya || "").toLowerCase();
   if (lower.includes("meals") || lower.includes("makan")) {
     return (
-      <Pizza className="w-20 h-20 text-yellow-500 bg-yellow-100/50 shadow-xl p-2 rounded-full inline-block" />
+      <Pizza className="w-16 h-16 text-yellow-500 bg-yellow-100/50 shadow-xl p-2 rounded-full inline-block" />
     );
   } else if (
     lower.includes("transport") ||
@@ -36,11 +36,11 @@ const getIcon = (jenisBiaya?: string) => {
     lower.includes("gride")
   ) {
     return (
-      <Car className="w-20 h-20 text-green-500 bg-green-100/50 shadow-xl p-2 rounded-full inline-block" />
+      <Car className="w-16 h-16 text-green-500 bg-green-100/50 shadow-xl p-2 rounded-full inline-block" />
     );
   } else if (lower.includes("ticket") || lower.includes("tiket")) {
     return (
-      <Ticket className="w-20 h-20 text-red-500 bg-red-100/50 shadow-xl p-2 rounded-full inline-block" />
+      <Ticket className="w-16 h-16 text-red-500 bg-red-100/50 shadow-xl p-2 rounded-full inline-block" />
     );
   } else {
     return null;
@@ -77,6 +77,7 @@ export default function NewTransactionInfo() {
     }
   };
 
+  // Initial fetch
   useEffect(() => {
     fetchData();
   }, []);
@@ -85,18 +86,32 @@ export default function NewTransactionInfo() {
   useEffect(() => {
     if (!loading && dataList.length > 0) {
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev === dataList.length - 1 ? 0 : prev + 1));
+        setCurrentIndex((prev) =>
+          prev === dataList.length - 1 ? 0 : prev + 1
+        );
       }, 9000);
       return () => clearInterval(interval);
     }
   }, [loading, dataList]);
 
+  // Auto refresh data setiap 10 menit
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      fetchData();
+    }, 600000); // 600.000 ms = 10 menit
+    return () => clearInterval(refreshInterval);
+  }, []);
+
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? dataList.length - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? dataList.length - 1 : prev - 1
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === dataList.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) =>
+      prev === dataList.length - 1 ? 0 : prev + 1
+    );
   };
 
   // Variants untuk transisi carousel tanpa scaling (hanya geser horizontal)
@@ -110,11 +125,13 @@ export default function NewTransactionInfo() {
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       {loading ? (
-        <div className="h-screen flex items-center justify-center">Loading...</div>
+        <div className="h-screen flex items-center justify-center">
+          Loading...
+        </div>
       ) : (
         <div className="max-w-md mx-auto p-4">
           {/* Container dengan ukuran tetap dan overflow-hidden */}
-          <div className="relative h-64 overflow-hidden">
+          <div className="relative h-54 overflow-hidden">
             <AnimatePresence initial={false}>
               <motion.div
                 key={dataList[currentIndex].no}
@@ -125,16 +142,16 @@ export default function NewTransactionInfo() {
                 transition={{ type: "spring", stiffness: 60, damping: 25 }}
                 className="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg p-4"
               >
-                <div className="text-gray-500 text-sm font-semibold border-2 border-gray-300 rounded-full px-4 py-1 mb-2 shadow-2xl">
+                <div className="text-gray-500 text-xs font-semibold border-2 border-gray-300 rounded-full px-4 py-1 mb-2 shadow-2xl">
                   {formatDate(dataList[currentIndex].date)}
                 </div>
                 <div className="flex flex-col items-center gap-2 my-2">
                   {getIcon(dataList[currentIndex].jenisBiaya)}
-                  <span className="text-2xl font-extrabold">
+                  <span className="text-xl font-extrabold">
                     {dataList[currentIndex].jenisBiaya}
                   </span>
                 </div>
-                <div className="text-green-600 font-bold text-xl">
+                <div className="text-green-600 font-bold text-lg">
                   {dataList[currentIndex].jumlah.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
