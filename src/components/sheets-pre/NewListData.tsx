@@ -103,7 +103,7 @@ export default function ListData() {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="bottom-left" autoClose={3000} />
       {editData && (
         <EditForm
           editData={editData}

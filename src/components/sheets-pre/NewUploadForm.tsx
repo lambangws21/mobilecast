@@ -1,24 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {  LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface FormDataType {
-    id?: string;
-    date: string;
-    jenisBiaya: string;
-    keterangan: string;
-    jumlah: string;
-    klaimOleh: string;
-  }
+  id?: string;
+  date: string;
+  jenisBiaya: string;
+  keterangan: string;
+  jumlah: string;
+  klaimOleh: string;
+}
 
-  interface UploadFormProps {
-    onUpload: () => void;
-    editData?: FormDataType | null;
-    onLoadingChange?: React.Dispatch<React.SetStateAction<boolean>>;
-  }
+interface UploadFormProps {
+  onUpload: () => void;
+  onClose: () => void;  // ✅ Tambahkan ini
+  editData?: FormDataType | null;
+}
+
 
 export default function UploadForm({ onUpload, editData }: UploadFormProps) {
   const [isUploading, setIsUploading] = useState(false);
@@ -55,6 +56,8 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUploading(true);
+    toast.info("📤 Mengunggah data...");
+
     const method = formData.id ? "PUT" : "POST";
     const apiUrl = "/api/sheets-pre";
 
@@ -70,8 +73,10 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
             mimeType: file?.type || "",
           }),
         });
+
         const data = await res.json();
         setIsUploading(false);
+
         if (data.status === "success") {
           toast.success(`✅ ${formData.id ? "Data diperbarui" : "Data ditambahkan"} berhasil!`);
           onUpload();
@@ -107,7 +112,13 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
-      <form onSubmit={handleSubmit} className="space-y-3 p-4 border rounded-lg bg-white/10">
+      <motion.form
+        onSubmit={handleSubmit}
+        className="space-y-3 p-4 border rounded-lg bg-white/10 shadow-lg"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
         <input
           type="date"
           name="date"
@@ -165,7 +176,9 @@ export default function UploadForm({ onUpload, editData }: UploadFormProps) {
         >
           {isUploading ? "Mengunggah..." : formData.id ? "Simpan Perubahan" : "Unggah & Simpan"}
         </button>
-      </form>
+      </motion.form>
+
+      {/* Loading Screen */}
       <AnimatePresence>
         {isUploading && (
           <motion.div

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Eye, Pizza, Car, Ticket, ArrowLeft, ArrowRight } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataRow } from "@/types/transaction";
-import "react-toastify/dist/ReactToastify.css";
+
 
 // Format tanggal: hanya DD/MM
 const formatDate = (dateString: string) => {
@@ -13,7 +13,8 @@ const formatDate = (dateString: string) => {
   if (isNaN(date.getTime())) return dateString;
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
-  return `${day}/${month}`;
+  const year = String(date.getFullYear());
+  return `${day}-${month}-${year}`;
 };
 
 // Fungsi untuk menentukan icon berdasarkan jenisBiaya
@@ -68,10 +69,10 @@ export default function NewTransactionInfo() {
         }));
         setDataList(parsedData);
       } else {
-        toast.error("❌ Gagal memuat data");
+        toast.error(" Gagal memuat data");
       }
     } catch {
-      toast.error("⚠️ Terjadi kesalahan saat memuat data");
+      toast.error(" Terjadi kesalahan saat memuat data");
     } finally {
       setLoading(false);
     }
@@ -83,16 +84,16 @@ export default function NewTransactionInfo() {
   }, []);
 
   // Auto carousel: ganti item setiap 9 detik
-  useEffect(() => {
-    if (!loading && dataList.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) =>
-          prev === dataList.length - 1 ? 0 : prev + 1
-        );
-      }, 9000);
-      return () => clearInterval(interval);
-    }
-  }, [loading, dataList]);
+  // useEffect(() => {
+  //   if (!loading && dataList.length > 0) {
+  //     const interval = setInterval(() => {
+  //       setCurrentIndex((prev) =>
+  //         prev === dataList.length - 1 ? 0 : prev + 1
+  //       );
+  //     }, 9000);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [loading, dataList]);
 
   // Auto refresh data setiap 10 menit
   useEffect(() => {

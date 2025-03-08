@@ -36,11 +36,11 @@ export default function TournamentCard({ tournament: initialTournament }: Tourna
   return (
     <div className="relative p-4 bg-green-100/95 rounded-xl shadow-sm text-green-800 flex flex-col items-center justify-center">
       {/* Badge alert di sudut kanan atas */}
-      <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+      <div className="relative -top-7 -right-20 bg-red-500 text-white text-[8px] font-semibold text-center items-center flex justify-center rotate-9 h-6 w-6 rounded-full animate-pulse">
         New
       </div>
-      <p className="text-sm sm:text-base md:text-lg font-bold">{tournament.name}</p>
-      <p className="mt-2 text-lg sm:text-xl md:text-2xl font-extrabold">
+      <p className="-mt-8 text-sm sm:text-base md:text-lg font-bold text-center uppercase">{tournament.name}</p>
+      <p className="text-md sm:text-lg md:text-xl font-extrabold">
         {tournament.entryFee !== undefined
           ? tournament.entryFee.toLocaleString("id-ID", {
               style: "currency",

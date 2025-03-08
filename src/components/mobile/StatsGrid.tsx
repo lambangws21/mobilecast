@@ -11,7 +11,7 @@ interface StatsGridProps {
 export default function StatsGrid({ stats, tournament }: StatsGridProps) {
   return (
     <div className="grid grid-cols-2 gap-3">
-      <div className="p-4 bg-blue-100 rounded-xl shadow-sm text-blue-800">
+      <div className="p-2 bg-blue-100 rounded-xl shadow-sm text-blue-800">
         <TournamentCard tournament={tournament} />
       </div>
       <div className="p-4 bg-red-100 rounded-xl shadow-sm text-red-800">

@@ -9,10 +9,10 @@ import NewTransactionInfo from '@/components/mobile/NewTransactionInfo';
 import { fetchDashboardData } from '@/lib/mobile';
 import { DashboardData } from '@/types/mobile';
 import { useEffect, useState } from 'react';
-import DataList from "@/components/sheets-pre/NewListData";
+import DataList from "@/components/mobile/NewDataTableAdvance";
 import { Loader2 } from 'lucide-react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import DataOperasi from "@/components/mobile/dataOperasi/NewDataTable";
+
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
@@ -47,9 +47,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <Header /> 
-      {/* Menampilkan satu toast sekaligus, otomatis tertutup setelah 3 detik */}
-      <ToastContainer limit={1} autoClose={3000} position="top-right" />
+      <Header />
       <div className="p-4 space-y-4 pb-24 w-full">
         <ProfileCard profile={data.profile} />
        
@@ -60,6 +58,9 @@ export default function DashboardPage() {
         </div>
         <div className="p-1 bg-white rounded-xl shadow-sm">
           <DataList />
+        </div>
+        <div className="p-0 bg-white rounded-xl shadow-sm">
+        <DataOperasi />
         </div>
       </div>
       <Sidebar />
