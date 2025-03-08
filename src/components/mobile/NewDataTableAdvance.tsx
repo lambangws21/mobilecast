@@ -167,7 +167,7 @@ export default function NewDataTableAdvance() {
                   fetchData();
                   setModalOpen(false); // ✅ Tutup modal setelah upload berhasil
                 }}
-                onClose={() => setModalOpen(false)} // ✅ Tambahkan onClose agar tidak error
+                onclose={() => setModalOpen(false)} // ✅ Tambahkan onClose agar tidak error
               />
             </motion.div>
           </motion.div>
@@ -233,7 +233,7 @@ export default function NewDataTableAdvance() {
                     <td className="p-2 border-b text-[10px] text-center">
                       <Eye className="w-4 h-4 text-blue-500" />
                     </td>
-                    <td className="p-2  text-[10px] items-center flex justify-center gap-1">
+                    <td className="p-2 border-b text-[10px] items-center flex gap-1">
                       <Edit2
                         className="w-4 h-4 text-green-500 cursor-pointer"
                         onClick={() => setEditData(item)}

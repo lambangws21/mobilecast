@@ -16,10 +16,9 @@ interface FormDataType {
 
 interface UploadFormProps {
   onUpload: () => void;
-  onClose: () => void;  // ✅ Tambahkan ini
   editData?: FormDataType | null;
+  onclose: () => void;
 }
-
 
 export default function UploadForm({ onUpload, editData }: UploadFormProps) {
   const [isUploading, setIsUploading] = useState(false);
