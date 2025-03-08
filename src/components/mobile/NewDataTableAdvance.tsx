@@ -4,15 +4,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import EditForm from "@/components/sheets-pre/EditForm";
 import FormModal from "@/components/sheets-pre/NewUploadForm";
-import {
-  Trash2,
-  Edit2,
-  Eye,
-  Plus,
-  X,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Eye, Plus, X, ChevronLeft, ChevronRight } from "lucide-react";
+import ActionButton from "@/components/ui/ActionButton";
 import { ToastContainer, toast } from "react-toastify";
 import { DataRow } from "@/types/transaction";
 import "react-toastify/dist/ReactToastify.css";
@@ -124,7 +117,7 @@ export default function NewDataTableAdvance() {
       {/* ✅ Tombol Tambah Data */}
       <motion.button
         onClick={() => setModalOpen(true)}
-        className="w-full bg-green-500 text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600 transition mb-3"
+        className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600 transition mb-2"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -132,7 +125,7 @@ export default function NewDataTableAdvance() {
       </motion.button>
 
       {/* ✅ Total Amount */}
-      <div className="text-lg font-bold text-center text-gray-700 bg-gray-200 py-2 rounded-md mb-3">
+      <div className="text-lg font-bold text-center text-gray-700 bg-gray-200 py-2 rounded-md mb-2">
         Total Amount:
         <span className="text-blue-600">Rp {totalAmount.toLocaleString()}</span>
       </div>
@@ -183,70 +176,89 @@ export default function NewDataTableAdvance() {
           transition={{ duration: 0.8 }}
         >
           {isLoading ? (
-            <div className="text-center py-4 text-gray-500">Memuat data...</div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-center py-4 text-gray-500"
+            >
+              <div className="animate-spin border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 mx-auto mb-2"></div>
+              <p>Memuat data...</p>
+            </motion.div>
           ) : (
-            <table className="min-w-full bg-white rounded-lg shadow-md border">
-              <thead className="bg-slate-700 text-white text-xs">
-                <tr>
-                  {[
-                    "Date",
-                    "Biaya",
-                    "Info",
-                    "Jumlah",
-                    "Klaim",
-                    "Status",
-                    "Aksi",
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      className="p-2 border-b text-[10px] text-center"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="overflow-x-auto"
+            >
+              <table className="min-w-full bg-white rounded-lg shadow-md border">
+                <thead className="bg-slate-700 text-white text-xs">
+                  <tr>
+                    {[
+                      "Date",
+                      "Biaya",
+                      "Info",
+                      "Jumlah",
+                      "Klaim",
+                      "Status",
+                      "",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        className="p-2 border-b text-[10px] text-center"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <motion.tbody>
+                  {paginatedData.map((item, index) => (
+                    <motion.tr
+                      key={`${item.no}-${index}`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="hover:bg-gray-200 transition text-[10px]"
                     >
-                      {header}
-                    </th>
+                      <td className="p-2 border-b text-[10px] text-center">
+                        {formatDate(item.date)}
+                      </td>
+                      <td className="p-2 border-b text-[10px]">
+                        {item.jenisBiaya}
+                      </td>
+                      <td className="p-2 border-b text-[10px]">
+                        {item.keterangan}
+                      </td>
+                      <td className="p-2 border-b text-[10px] text-right">
+                        {item.jumlah.toLocaleString("id-ID")}
+                      </td>
+                      <td className="p-2 border-b text-[10px]">
+                        {item.klaimOleh}
+                      </td>
+                      <td className="p-2 border-b text-center">
+                        <a
+                          href={item.status}
+                          target="_blank"
+                          className="text-blue-600 underline hover:text-blue-800"
+                        >
+                          <Eye size={18} />
+                        </a>
+                      </td>
+                      <td className="border-b p-2 text-center">
+                        <ActionButton
+                          onEdit={() => {
+                            setEditData(item);
+                          }}
+                          onDelete={() => handleDelete(item.no)}
+                        />
+                      </td>
+                    </motion.tr>
                   ))}
-                </tr>
-              </thead>
-              <motion.tbody>
-                {paginatedData.map((item, index) => (
-                  <motion.tr
-                    key={`${item.no}-${index}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="hover:bg-gray-200 transition text-[10px]"
-                  >
-                    <td className="p-2 border-b text-[10px] text-center">
-                      {formatDate(item.date)}
-                    </td>
-                    <td className="p-2 border-b text-[10px]">
-                      {item.jenisBiaya}
-                    </td>
-                    <td className="p-2 border-b text-[10px]">
-                      {item.keterangan}
-                    </td>
-                    <td className="p-2 border-b text-[10px] text-right">
-                      {item.jumlah.toLocaleString("id-ID")}
-                    </td>
-                    <td className="p-2 border-b text-[10px]">
-                      {item.klaimOleh}
-                    </td>
-                    <td className="p-2 border-b text-[10px] text-center">
-                      <Eye className="w-4 h-4 text-blue-500" />
-                    </td>
-                    <td className="p-2 border-b text-[10px] items-center flex gap-1">
-                      <Edit2
-                        className="w-4 h-4 text-green-500 cursor-pointer"
-                        onClick={() => setEditData(item)}
-                      />
-                      <Trash2
-                        className="w-4 h-4 text-red-500 cursor-pointer"
-                        onClick={() => handleDelete(item.no)}
-                      />
-                    </td>
-                  </motion.tr>
-                ))}
-              </motion.tbody>
-            </table>
+                </motion.tbody>
+              </table>
+            </motion.div>
           )}
         </motion.div>
         {/* ✅ Pagination Controls */}

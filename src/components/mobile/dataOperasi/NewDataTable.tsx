@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Plus } from "lucide-react";
 import { DataRow } from "@/types/dataoperasi";
 import FormModal from "./form-modal";
 import ActionButton from "@/components/ui/ActionButton";
@@ -85,17 +85,17 @@ export default function DataTable() {
   const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
 
   return (
-    <div className="max-w-[430px] mx-auto p-4 rounded-lg">
+    <div className="max-w-[430px] mx-auto p-1 rounded-lg">
       <ToastContainer position="top-left" autoClose={3000} />
 
       {/* ✅ Tombol Tambah Data */}
       <motion.button
         onClick={() => setModalOpen(true)}
-        className="mb-4 bg-green-500 px-4 py-2 rounded-lg text-white hover:bg-green-600 transition w-full"
+        className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600 transition mb-2"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        + Tambah Data
+       <Plus size={18}/> Tambah Data
       </motion.button>
 
       {/* ✅ Form Modal */}
@@ -208,7 +208,7 @@ export default function DataTable() {
         >
             <ChevronLeft/>
         </button>
-        <span className="text-gray-700 font-[10px]">
+        <span className="text-gray-700 font-[8px]">
           Page {currentPage} of {Math.ceil(dataList.length / dataPerPage)}
         </span>
         <button
