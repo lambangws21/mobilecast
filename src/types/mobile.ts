@@ -1,21 +1,21 @@
-// types/mobile.ts
-export interface DashboardProfile {
+export interface Profile {
   name: string;
   level: string;
   stars: number;
 }
 
-export interface TournamentInfo {
+export interface Tournament {
   name: string;
   entryFee: number;
   endDate: string;
 }
 
-export interface StatsInfo {
+export interface Stats {
   progress: number;
   arenaScore: number;
   ranking: number;
   following: number;
+  totalAmount: number; // ✅ Pastikan ini tetap number
 }
 
 export interface Transaction {
@@ -26,32 +26,9 @@ export interface Transaction {
 }
 
 export interface DashboardData {
-  profile: DashboardProfile;
-  tournament: TournamentInfo;
-  stats: StatsInfo;
+  totalAmount: number; // ✅ Harus number, bukan Stats
+  profile: Profile;
+  tournament: Tournament;
+  stats: Stats;
   transactions: Transaction[];
-}
-
-export interface Profile {
-  name: string;
-  level: string;
-  stars: number;
-}
-export interface Stats {
-  progress: number;
-  arenaScore: number;
-  ranking: number;
-  following: number;
-}
-
-
-export interface Tournament {
-  name: string;
-  entryFee: number;
-  endDate: string;
-}
-
-export interface Transaction{
-  date: string;
-  jenisBiaya: string;
 }

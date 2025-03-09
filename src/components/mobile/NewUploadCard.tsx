@@ -29,34 +29,42 @@ export default function ProfileWithForm({ profile }: ProfileWithFormProps) {
     <div className="max-w-md mx-auto p-4 rounded-lg shadow-sm bg-slate-200/70 relative">
       <ProfileCard profile={profile} />
       <div className="mt-4 flex justify-start">
-        <AddDataButton
-          onClick={toggleForm}
-          className="flex items-center gap-2 rounded-full"
-        />
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 300, damping: 10 }}
+        >
+          <AddDataButton
+            onClick={toggleForm}
+            className="flex items-center gap-2 rounded-full"
+          />
+        </motion.div>
       </div>
 
       {/* Modal Form */}
       <AnimatePresence>
         {formOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 flex justify-center items-center z-50 bg-black/50"
           >
             <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md relative"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md relative"
             >
               {/* Close Button */}
               <button
                 onClick={() => setFormOpen(false)}
-                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xs"
+                className="absolute top-1  right-2 text-gray-600 hover:text-gray-800 text-xs"
               >
-                <CircleX size={25} className="hover:text-gray-800" />
+                <CircleX size={35} className="hover:text-gray-800" />
+
               </button>
 
               {/* Upload Form */}
