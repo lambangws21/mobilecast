@@ -25,22 +25,30 @@ export async function fetchDashboardData(): Promise<DashboardData> {
   // Ambil row terbaru dari data yang diambil (asumsi: data diurutkan sehingga elemen terakhir adalah yang terbaru)
   const latestRow = rawData.data[rawData.data.length - 1];
 
+  // Hitung totalAmount dengan menjumlahkan properti jumlah dari seluruh data
+  const totalAmount = rawData.data.reduce(
+    (acc, row) => acc + (Number(row.jumlah) || 0),
+    0
+  );
+
   return {
+    totalAmount: totalAmount, // Menambahkan properti totalAmount di level teratas
     profile: {
       name: "Herlambang Ws",
       level: "Intermediate",
       stars: 2,
     },
     tournament: {
-      name: (latestRow.jenisBiaya),
+      name: latestRow.jenisBiaya,
       entryFee: Number(latestRow.jumlah), // Entry fee diambil dari data terbaru
-      endDate: (latestRow.date), // Anda bisa menggantinya dengan formatDate(latestRow.date) jika diinginkan
+      endDate: latestRow.date, // Anda bisa menggantinya dengan formatDate(latestRow.date) jika diinginkan
     },
     stats: {
       progress: rawData.data.length,
       arenaScore: 77,
       ranking: 1239,
       following: 10,
+      totalAmount: totalAmount, // Juga disertakan di dalam stats jika diperlukan
     },
     transactions: rawData.data.map((row) => ({
       date: formatDate(row.date),
