@@ -8,7 +8,6 @@ export interface Tournament {
   name: string;
   entryFee: number;
   endDate: string;
-  totalAmount: number;
 }
 
 export interface Stats {
