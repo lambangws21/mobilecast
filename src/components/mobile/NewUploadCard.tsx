@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProfileCard from "./ProfileCard";
 import UploadForm from "@/components/sheets-pre/NewUploadForm";
-import AddDataButton from "@/components/ui/AddButton";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CircleX } from "lucide-react";
@@ -28,17 +27,18 @@ export default function ProfileWithForm({ profile }: ProfileWithFormProps) {
   return (
     <div className="max-w-md mx-auto p-4 rounded-lg shadow-sm bg-slate-200/70 relative">
       <ProfileCard profile={profile} />
+
+      {/* Tombol Tambah Data */}
       <div className="mt-4 flex justify-start">
-        <motion.div
+        <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          onClick={toggleForm}
+          className="bg-green-400 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2"
         >
-          <AddDataButton
-            onClick={toggleForm}
-            className="flex items-center gap-2 rounded-full"
-          />
-        </motion.div>
+          Tambah Data
+        </motion.button>
       </div>
 
       {/* Modal Form */}
@@ -56,18 +56,17 @@ export default function ProfileWithForm({ profile }: ProfileWithFormProps) {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               transition={{ duration: 0.3 }}
-              className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md relative"
+              className="bg-white p-9 rounded-lg shadow-lg w-[390px] h-[480px] max-w-md relative"
             >
-              {/* Close Button */}
+              {/* Tombol Tutup Modal */}
               <button
                 onClick={() => setFormOpen(false)}
-                className="absolute top-1  right-2 text-gray-600 hover:text-gray-800 text-xs"
+                className="absolute top-1 right-2 text-gray-600 hover:text-gray-800 text-xs mt-1 flex items-center hover:cursor-pointer hover:scale-110 transition"
               >
-                <CircleX size={35} className="hover:text-gray-800" />
-
+                <CircleX size={30} className="ml-4" />
               </button>
 
-              {/* Upload Form */}
+              {/* Form Upload */}
               <UploadForm
                 onUpload={handleUpload}
                 editData={null}
