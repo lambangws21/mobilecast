@@ -14,12 +14,12 @@ export interface Transaction {
     message?: string;
   }
   
-  export   interface DataRow {
+  export  interface DataRow {
     no: number;
     date: string;
     jenisBiaya: string;
     keterangan: string;
-    jumlah: number;  // ⬅️ ubah jadi string
+    jumlah: number; 
     klaimOleh: string;
     status: string;
   }

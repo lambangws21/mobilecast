@@ -53,7 +53,7 @@ export default function DashboardPage() {
         <StatsGrid
           stats={data.stats}
           tournament={data.tournament}
-          totalAmount={data.stats?.totalAmount ?? 0} // ✅ Pastikan totalAmount memiliki nilai default
+          totalAmount={data.stats.totalAmount} 
         />
 
         <div className="p-4 bg-white rounded-xl shadow-sm">
