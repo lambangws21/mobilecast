@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Eye, Pizza, Car, Ticket, ArrowLeft, ArrowRight } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataRow } from "@/types/transaction";
+import LoadingThreeDotsPulse from "../loading/loading-three-ball";
 
 
 // Format tanggal: hanya DD/MM
@@ -83,17 +84,7 @@ export default function NewTransactionInfo() {
     fetchData();
   }, []);
 
-  // Auto carousel: ganti item setiap 9 detik
-  // useEffect(() => {
-  //   if (!loading && dataList.length > 0) {
-  //     const interval = setInterval(() => {
-  //       setCurrentIndex((prev) =>
-  //         prev === dataList.length - 1 ? 0 : prev + 1
-  //       );
-  //     }, 9000);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [loading, dataList]);
+
 
   // Auto refresh data setiap 10 menit
   useEffect(() => {
@@ -127,7 +118,7 @@ export default function NewTransactionInfo() {
       <ToastContainer position="top-right" autoClose={3000} />
       {loading ? (
         <div className="h-screen flex items-center justify-center">
-          Loading...
+         <LoadingThreeDotsPulse />
         </div>
       ) : (
         <div className="max-w-md mx-auto p-4">

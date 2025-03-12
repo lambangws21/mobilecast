@@ -10,8 +10,8 @@ import { fetchDashboardData } from "@/lib/mobile";
 import { DashboardData } from "@/types/mobile";
 import { useEffect, useState } from "react";
 import DataList from "@/components/mobile/NewDataTableAdvance";
-import { Loader2 } from "lucide-react";
 import DataOperasi from "@/components/mobile/dataOperasi/NewDataTable";
+import LoadingThreeDotsPulse from "../loading/loading-three-ball";
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
@@ -34,7 +34,7 @@ export default function DashboardPage() {
   if (loading)
     return (
       <div className="h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin h-20 w-20" />
+        <LoadingThreeDotsPulse/>
       </div>
     );
   if (!data)
