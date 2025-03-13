@@ -3,7 +3,7 @@
 import DashboardLayout from "@/layout/DashboardLayout";
 import { Header } from "@/components/mobile/Header";
 import { Sidebar } from "@/components/mobile/Sidebar";
-import ProfileCard from "@/components/mobile/NewUploadCard";
+import NewProfileCard from "@/components/mobile/new-peofilecard";
 import StatsGrid from "@/components/mobile/StatsGrid";
 import NewTransactionInfo from "@/components/mobile/NewTransactionInfo";
 import { fetchDashboardData } from "@/lib/mobile";
@@ -48,8 +48,7 @@ export default function DashboardPage() {
     <DashboardLayout>
       <Header />
       <div className="p-4 space-y-4 pb-24 w-full">
-        <ProfileCard profile={data.profile} />
-
+        <NewProfileCard/>
         <StatsGrid
           stats={data.stats}
           tournament={data.tournament}
