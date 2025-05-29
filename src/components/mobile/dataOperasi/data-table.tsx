@@ -6,6 +6,7 @@ import { Eye } from "lucide-react";
 import { DataRow } from "@/types/dataoperasi";
 import FormModal from "./form-modal";
 import ActionButton from "@/components/ui/ActionButton";
+import { exportToExcel } from "@/lib/exportToExcel";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -124,7 +125,10 @@ export default function DataTable() {
                   "Status",
                   "",
                 ].map((header) => (
-                  <th key={header} className="border-b text-[10px] p-2 text-center">
+                  <th
+                    key={header}
+                    className="border-b text-[10px] p-2 text-center"
+                  >
                     {header}
                   </th>
                 ))}
@@ -154,7 +158,7 @@ export default function DataTable() {
                       target="_blank"
                       className="text-blue-600 underline hover:text-blue-800"
                     >
-                        <Eye size={18} />
+                      <Eye size={18} />
                     </a>
                   </td>
 
@@ -167,6 +171,12 @@ export default function DataTable() {
                       }}
                       onDelete={() => handleDelete(row.no)}
                     />
+                    <button
+                      onClick={() => exportToExcel(dataList)}
+                      className="w-full bg-slate-600 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-700 transition mb-4"
+                    >
+                      📁 Export ke Excel
+                    </button>
                   </td>
                 </motion.tr>
               ))}

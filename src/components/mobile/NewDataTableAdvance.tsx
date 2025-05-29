@@ -4,13 +4,14 @@ import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import EditForm from "@/components/sheets-pre/EditForm";
 import FormModal from "@/components/sheets-pre/NewUploadForm";
-import { Eye, Plus, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Eye, Plus, X, ChevronLeft, ChevronRight, File } from "lucide-react";
 import ActionButton from "@/components/ui/ActionButton";
+import { exportToExcel } from "@/lib/exportToExcel";
 import { ToastContainer, toast } from "react-toastify";
+import ActionButtons from "./AnimateButtonAction";
 import { DataRow } from "@/types/transaction";
 import "react-toastify/dist/ReactToastify.css";
 
-// ✅ Format tanggal ke `dd/mm`
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return isNaN(date.getTime())
@@ -23,12 +24,11 @@ const formatDate = (dateString: string) => {
 export default function NewDataTableAdvance() {
   const [dataList, setDataList] = useState<DataRow[]>([]);
   const [editData, setEditData] = useState<DataRow | null>(null);
-  const [currentPage, setCurrentPage] = useState(1); // ✅ Digunakan dalam pagination
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const itemsPerPage = 4;
 
-  // ✅ Fetch Data dari API
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -60,7 +60,6 @@ export default function NewDataTableAdvance() {
     fetchData();
   }, []);
 
-  // ✅ Menghapus data dengan konfirmasi
   const handleDelete = async (no: number) => {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
 
@@ -74,7 +73,7 @@ export default function NewDataTableAdvance() {
       const result = await res.json();
       if (result.status === "success") {
         toast.success("✅ Data berhasil dihapus!");
-        fetchData(); // 🔹 Refresh data setelah delete
+        fetchData();
       } else {
         toast.error("❌ Gagal menghapus data!");
       }
@@ -83,7 +82,6 @@ export default function NewDataTableAdvance() {
     }
   };
 
-  // ✅ Menghitung total amount menggunakan `useMemo`
   const totalAmount = useMemo(() => {
     return dataList
       .reduce((acc, item) => acc + (item.jumlah || 0), 0)
@@ -95,7 +93,6 @@ export default function NewDataTableAdvance() {
       });
   }, [dataList]);
 
-  // ✅ Pagination
   const totalPages = Math.max(1, Math.ceil(dataList.length / itemsPerPage));
   const paginatedData = dataList.slice(
     (currentPage - 1) * itemsPerPage,
@@ -114,23 +111,122 @@ export default function NewDataTableAdvance() {
         />
       )}
 
-      {/* ✅ Tombol Tambah Data */}
-      <motion.button
-        onClick={() => setModalOpen(true)}
-        className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600 transition mb-2"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Plus size={18} /> Tambah Data
-      </motion.button>
+      <div className="max-w-[430px] mx-auto px-2 sm:px-4">
+        <ActionButtons
+          onAction={async () => {
+            await new Promise((res) => setTimeout(res, 500));
+            setModalOpen(true);
+          }}
+          addingLabel="Menambahkan data..."
+          loadingLabel="Menunggu form..."
+          successLabel="Form siap!"
+          errorLabel="Gagal membuka form!"
+          className="w-full mb-2"
+        >
+          <Plus size={16} /> Tambah Data
+        </ActionButtons>
 
-      {/* ✅ Total Amount */}
-      <div className="text-lg font-bold text-center text-gray-700 bg-gray-200 py-2 rounded-md mb-2">
-        Total Amount:
-        <span className="text-blue-600">Rp {totalAmount.toLocaleString()}</span>
+        <div className="text-base sm:text-lg font-bold text-center text-gray-700 bg-gray-200 py-2 rounded-md mb-2">
+          Total Amount:
+          <span className="text-blue-600"> {totalAmount}</span>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => exportToExcel(dataList)}
+          className="mb-4 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition"
+        >
+          <File className="w-5 h-5" /> Export ke Excel
+        </motion.button>
+
+        <motion.div
+          className="overflow-x-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          {isLoading ? (
+            <div className="text-center py-4 text-gray-500">
+              <div className="animate-spin border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 mx-auto mb-2"></div>
+              <p>Memuat data...</p>
+            </div>
+          ) : (
+            <table className="w-full bg-white rounded-lg shadow-md border text-[10px] sm:text-xs">
+              <thead className="bg-slate-700 text-white">
+                <tr>
+                  {["Date", "Biaya", "Info", "Jumlah", "Klaim", "Status", ""]
+                    .map((header) => (
+                      <th
+                        key={header}
+                        className="p-2 border-b text-center whitespace-nowrap"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedData.map((item, index) => (
+                  <motion.tr
+                    key={`${item.no}-${index}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="hover:bg-gray-100 transition"
+                  >
+                    <td className="p-2 border-b text-center">
+                      {formatDate(item.date)}
+                    </td>
+                    <td className="p-2 border-b">{item.jenisBiaya}</td>
+                    <td className="p-2 border-b">{item.keterangan}</td>
+                    <td className="p-2 border-b text-right">
+                      {item.jumlah.toLocaleString("id-ID")}
+                    </td>
+                    <td className="p-2 border-b">{item.klaimOleh}</td>
+                    <td className="p-2 border-b text-center">
+                      <a
+                        href={item.status}
+                        target="_blank"
+                        className="text-blue-600 underline hover:text-blue-800"
+                      >
+                        <Eye size={18} />
+                      </a>
+                    </td>
+                    <td className="border-b p-2 text-center">
+                      <ActionButton
+                        onEdit={() => setEditData(item)}
+                        onDelete={() => handleDelete(item.no)}
+                      />
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </motion.div>
+
+        <div className="flex justify-center items-center mt-4 gap-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="p-2 bg-gray-300 rounded-full text-xs sm:text-sm disabled:opacity-50"
+          >
+            <ChevronLeft />
+          </button>
+          <span className="text-xs sm:text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="p-2 bg-gray-300 rounded-full text-xs sm:text-sm disabled:opacity-50"
+          >
+            <ChevronRight />
+          </button>
+        </div>
       </div>
 
-      {/* ✅ Modal Form */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -141,149 +237,28 @@ export default function NewDataTableAdvance() {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md relative"
+              className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-[95%] max-w-md relative"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
             >
-              {/* Tombol Tutup */}
               <button
                 onClick={() => setModalOpen(false)}
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
               >
                 <X size={24} />
               </button>
-
-              {/* Form */}
               <FormModal
                 onUpload={() => {
                   fetchData();
-                  setModalOpen(false); // ✅ Tutup modal setelah upload berhasil
+                  setModalOpen(false);
                 }}
-                onclose={() => setModalOpen(false)} // ✅ Tambahkan onClose agar tidak error
+                onclose={() => setModalOpen(false)}
               />
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* ✅ Tabel Data */}
-      <div className="max-w-[430px] mx-auto">
-        <motion.div
-          className="mt-6 overflow-x-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          {isLoading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="text-center py-4 text-gray-500"
-            >
-              <div className="animate-spin border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 mx-auto mb-2"></div>
-              <p>Memuat data...</p>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="overflow-x-auto"
-            >
-              <table className="min-w-full bg-white rounded-lg shadow-md border">
-                <thead className="bg-slate-700 text-white text-xs">
-                  <tr>
-                    {[
-                      "Date",
-                      "Biaya",
-                      "Info",
-                      "Jumlah",
-                      "Klaim",
-                      "Status",
-                      "",
-                    ].map((header) => (
-                      <th
-                        key={header}
-                        className="p-2 border-b text-[10px] text-center"
-                      >
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <motion.tbody>
-                  {paginatedData.map((item, index) => (
-                    <motion.tr
-                      key={`${item.no}-${index}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="hover:bg-gray-200 transition text-[10px]"
-                    >
-                      <td className="p-2 border-b text-[10px] text-center">
-                        {formatDate(item.date)}
-                      </td>
-                      <td className="p-2 border-b text-[10px]">
-                        {item.jenisBiaya}
-                      </td>
-                      <td className="p-2 border-b text-[10px]">
-                        {item.keterangan}
-                      </td>
-                      <td className="p-2 border-b text-[10px] text-right">
-                        {item.jumlah.toLocaleString("id-ID")}
-                      </td>
-                      <td className="p-2 border-b text-[10px]">
-                        {item.klaimOleh}
-                      </td>
-                      <td className="p-2 border-b text-center">
-                        <a
-                          href={item.status}
-                          target="_blank"
-                          className="text-blue-600 underline hover:text-blue-800"
-                        >
-                          <Eye size={18} />
-                        </a>
-                      </td>
-                      <td className="border-b p-2 text-center">
-                        <ActionButton
-                          onEdit={() => {
-                            setEditData(item);
-                          }}
-                          onDelete={() => handleDelete(item.no)}
-                        />
-                      </td>
-                    </motion.tr>
-                  ))}
-                </motion.tbody>
-              </table>
-            </motion.div>
-          )}
-        </motion.div>
-        {/* ✅ Pagination Controls */}
-        <div className="flex justify-center items-center mt-4 gap-4">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="p-2 bg-gray-300 rounded-full text-[10px] disabled:opacity-50"
-          >
-            <ChevronLeft />
-          </button>
-          <span className="text-[10px]">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            className="p-2 bg-gray-300 rounded-full text-[10px] disabled:opacity-50"
-          >
-            <ChevronRight />
-          </button>
-        </div>
-      </div>
     </>
   );
 }

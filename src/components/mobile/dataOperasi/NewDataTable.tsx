@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Eye, Plus } from "lucide-react";
-import { DataRow } from "@/types/dataoperasi";
+import { ChevronLeft, ChevronRight, Eye, Plus, File } from "lucide-react";
+import { DataRowOperasi } from "@/types/dataoperasi";
+import { exportToExcel } from "@/lib/exportOperasiExcel";
 import FormModal from "./form-modal";
 import ActionButton from "@/components/ui/ActionButton";
 import { toast, ToastContainer } from "react-toastify";
@@ -21,8 +22,8 @@ const formatDate = (dateString: string) => {
 
 // ✅ Komponen utama DataTable
 export default function DataTable() {
-  const [dataList, setDataList] = useState<DataRow[]>([]);
-  const [editData, setEditData] = useState<DataRow | null>(null);
+  const [dataList, setDataList] = useState<DataRowOperasi[]>([]);
+  const [editData, setEditData] = useState<DataRowOperasi | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
@@ -97,6 +98,15 @@ export default function DataTable() {
       >
        <Plus size={18}/> Tambah Data
       </motion.button>
+
+      <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => exportToExcel(dataList)}
+          className="mb-4 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition"
+        >
+          <File className="w-5 h-5" /> Export ke Excel
+        </motion.button>
 
       {/* ✅ Form Modal */}
       <FormModal

@@ -2,17 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { DataRow } from "@/types/dataoperasi";
+import { DataRowOperasi } from "@/types/dataoperasi";
 
 interface FormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUpload: () => void;
-  editData?: DataRow | null;
+  editData?: DataRowOperasi | null;
 }
 
 export default function FormModal({ isOpen, onClose, onUpload, editData }: FormModalProps) {
-  const [formData, setFormData] = useState<Omit<DataRow, "no" | "status">>({
+  const [formData, setFormData] = useState<Omit<DataRowOperasi, "no" | "status">>({
     date: "",
     rumahSakit: "",
     tindakanOperasi: "",
